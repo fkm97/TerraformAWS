@@ -2,6 +2,8 @@ name: "Terraform"
 
 on:
   push:
+    paths:
+      - "ec2AMI/**"
     branches: ["main"]
   pull_request:
   workflow_dispatch: # lets you run manually from Actions tab
@@ -18,6 +20,7 @@ jobs:
     defaults:
       run:
         shell: bash
+        working-directory: ec2AMI
 
     steps:
       # Checkout the repo
