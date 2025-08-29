@@ -29,7 +29,7 @@ variable "ami_version" {
 variable "source_ami_id" {
   description = "Base AMI for the first instance"
   type        = string
-  default     = "ami-00ca32bbc84273381"  # AL2023 in us-east-1
+  default     = "ami-00ca32bbc84273381" 
 }
 
 variable "instance_type_source" {
@@ -54,10 +54,4 @@ variable "key_name" {
   description = "Optional EC2 key pair name"
   type        = string
   default     = null
-}
-
-variable "extra_tags" {
-  description = "Extra tags to add to resources"
-  type        = map(string)
-  default     = {}
 }

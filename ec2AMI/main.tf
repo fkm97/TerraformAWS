@@ -47,7 +47,7 @@ resource "aws_security_group" "ssh" {
     ipv6_cidr_blocks = ["::/0"]
   }
 
-  tags = merge({ Name = "${var.app_name}-${var.env}-ssh-sg", Env = var.env }, var.extra_tags)
+  tags = merge({ Name = "${var.app_name}-${var.env}-ssh-sg", Env = var.env })
 }
 
 # --- 1) First EC2 instance (the source) ---
@@ -61,7 +61,7 @@ resource "aws_instance" "source" {
     Name = "${var.app_name}-${var.env}-source"
     App  = var.app_name
     Env  = var.env
-  }, var.extra_tags)
+  })
 
    user_data = <<-EOF
     #!/bin/bash
@@ -107,7 +107,7 @@ resource "aws_ami_from_instance" "snapshot" {
     App     = var.app_name
     Env     = var.env
     Version = var.ami_version
-  }, var.extra_tags)
+  })
 
   lifecycle { create_before_destroy = true }
 }
@@ -124,7 +124,7 @@ resource "aws_instance" "clone" {
     App     = var.app_name
     Env     = var.env
     Version = var.ami_version
-  }, var.extra_tags)
+  })
 
   user_data = <<-EOF
     #!/bin/bash
