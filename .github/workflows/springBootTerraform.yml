@@ -1,0 +1,67 @@
+name: "Terraform"
+
+on:
+  push:
+    paths:
+      - "springBootTerraform/**"
+    branches: ["main"]
+  pull_request:
+  workflow_dispatch: # lets you run manually from Actions tab
+
+permissions:
+  contents: read
+
+jobs:
+  terraform:
+    name: "Terraform"
+    runs-on: ubuntu-latest
+    environment: production
+
+    defaults:
+      run:
+        shell: bash
+        working-directory: springBootTerraform
+
+    steps:
+      # Checkout the repo
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # Debug: list repo files
+      - name: List repo files
+        run: ls -la
+
+      # Setup Terraform
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.8.5 # match your local version
+
+      # Configure AWS credentials
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+
+      # Init
+      - name: Terraform Init
+        run: terraform init
+
+      # Destroy
+      - name: Terraform Destroy
+        run: terraform destroy -auto-approve
+
+      # Validate
+      - name: Terraform Validate
+        run: terraform validate
+
+      # Plan
+      - name: Terraform Plan
+        run: terraform plan -input=false
+
+      # Apply (only on push to main)
+      - name: Terraform Apply
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        run: terraform apply -auto-approve -input=false
