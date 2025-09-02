@@ -193,7 +193,6 @@ resource "aws_instance" "app_server" {
   ami                         = var.ami_id
   instance_type               = var.instance_type
   vpc_security_group_ids      = [aws_security_group.server_sg.id]
-  key_name                    = var.key_pair
   subnet_id                   = aws_subnet.public_1.id
   associate_public_ip_address = true
   iam_instance_profile        = aws_iam_instance_profile.ec2_instance_profile.name
@@ -251,7 +250,6 @@ resource "aws_launch_template" "my_launch_template" {
   name          = "SpringBootLaunchTemplate"
   image_id      = aws_ami_from_instance.app_ami.id
   instance_type = var.instance_type
-  key_name      = var.key_pair
   network_interfaces {
     associate_public_ip_address = true
     security_groups             = [aws_security_group.server_sg.id]

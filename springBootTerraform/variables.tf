@@ -133,9 +133,3 @@ variable "db_name" {
   type        = string
   default     = "mydb"
 }
-
-variable "key_pair" {
-  description = "SSH key pair"
-  type        = string
-  default     = "test-pair"
-}
