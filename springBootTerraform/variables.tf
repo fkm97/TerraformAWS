@@ -123,8 +123,8 @@ variable "rds_password" {
   default     = "admin123"
   description = "Postgres password"
   validation {
-    condition     = length(var.db_password) >= 8
-    error_message = "db_password must be at least 8 characters."
+    condition     = length(var.rds_password) >= 8
+    error_message = "rds_password must be at least 8 characters."
   }
 }
 
