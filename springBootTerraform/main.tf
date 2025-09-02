@@ -4,6 +4,7 @@ provider "aws" {
 
 resource "aws_vpc" "main" {
   cidr_block = var.vpc_cidr
+  tags = { Name = "SpringBoot-vpc" }
 }
 
 resource "aws_subnet" "public_1" {
@@ -300,6 +301,11 @@ resource "aws_autoscaling_group" "app_asg" {
     id      = aws_launch_template.my_launch_template.id
     version = "$Latest"
 
+  }
+   tag {
+    key                 = "Name"
+    value               = "WebServer-Spring-ASG"
+    propagate_at_launch = true
   }
   target_group_arns = [aws_lb_target_group.app_tg.arn]
   depends_on        = [aws_launch_template.my_launch_template]
